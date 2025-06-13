@@ -29,7 +29,6 @@ public class Category {
         this.name = name;
         this.type = type;
     }
-
    
     public Category(){}
 

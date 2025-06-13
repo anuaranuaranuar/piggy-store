@@ -16,16 +16,18 @@ public class ProductService {
         this.repository=repository;
     }
 
-
-    public Optional<Product> getProductByID(long id){
+    public List<Product> getByPage(Long page, Long numberRows){
+        if(numberRows>50){
+            numberRows = (long) 50;
+        }
+        Long offset = (page-1)*numberRows;
+        return repository.findByPage(numberRows, offset);
+    }
+    
+    public Optional<Product> getByID(long id){
         return repository.findById(id);
     }
 
-    public List<Product> getProducts(){
-        return repository.findAll(); 
-    }
 
-    public void deleteProductById(Long id){
-        repository.deleteById(id);
-    }
+    
 }

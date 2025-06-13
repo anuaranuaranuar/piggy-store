@@ -23,10 +23,6 @@ public class Product{
 	private Category category;
 
 	
-	
-
-    
-	
 
 	public Product(){}
     
