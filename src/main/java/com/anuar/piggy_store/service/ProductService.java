@@ -15,11 +15,13 @@ public class ProductService {
     public ProductService(ProductRepository repository){
         this.repository=repository;
     }
-
+    
+    //trae  lista de productos  por pagina 
     public List<Product> getByPage(Long page, Long numberRows){
-        if(numberRows>50){
+        if(numberRows>50){//limito las filas 
             numberRows = (long) 50;
         }
+
         Long offset = (page-1)*numberRows;
         return repository.findByPage(numberRows, offset);
     }
@@ -27,7 +29,13 @@ public class ProductService {
     public Optional<Product> getByID(long id){
         return repository.findById(id);
     }
-
-
     
+    public void save1(Product p){
+        repository.save1(
+            p.getName(),
+            p.getDescription(),
+            p.getPrice(),
+            p.getQuantity(),
+            p.getCategory().getId());
+    }
 }

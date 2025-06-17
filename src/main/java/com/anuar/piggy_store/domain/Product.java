@@ -11,12 +11,12 @@ public class Product{
     
     private String name;
 
-    private double price;
+    private Double price;
 
     @Column(columnDefinition = "TEXT")
     private String description;
     
-    private long quantity;
+    private Long quantity;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
@@ -63,6 +63,15 @@ public class Product{
 	public void setQuantity(long quantity) {
 		this.quantity = quantity;
 	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	
     
 }
 
