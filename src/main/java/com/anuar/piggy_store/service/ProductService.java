@@ -15,6 +15,15 @@ public class ProductService {
     public ProductService(ProductRepository repository){
         this.repository=repository;
     }
+
+    public void save1(Product p){
+        repository.save1(
+            p.getName(),
+            p.getDescription(),
+            p.getPrice(),
+            p.getQuantity(),
+            p.getCategory().getId());
+    }
     
     //trae  lista de productos  por pagina 
     public List<Product> getByPage(Long page, Long numberRows){
@@ -27,15 +36,9 @@ public class ProductService {
     }
     
     public Optional<Product> getByID(long id){
+         
         return repository.findById(id);
     }
     
-    public void save1(Product p){
-        repository.save1(
-            p.getName(),
-            p.getDescription(),
-            p.getPrice(),
-            p.getQuantity(),
-            p.getCategory().getId());
-    }
+    
 }

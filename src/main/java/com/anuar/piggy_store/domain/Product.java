@@ -22,7 +22,6 @@ public class Product{
 	@JoinColumn(name = "category_id")
 	private Category category;
 
-	
 
 	public Product(){}
     
@@ -33,34 +32,44 @@ public class Product{
 		this.description = description;
 		this.quantity = quantity;
 	}
-	public long getId() {
+
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public double getPrice() {
+
+	public Double getPrice() {
 		return price;
 	}
-	public void setPrice(double price) {
+
+	public void setPrice(Double price) {
 		this.price = price;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public long getQuantity() {
+
+	public Long getQuantity() {
 		return quantity;
 	}
-	public void setQuantity(long quantity) {
+
+	public void setQuantity(Long quantity) {
 		this.quantity = quantity;
 	}
 
