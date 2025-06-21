@@ -1,11 +1,7 @@
 package com.anuar.piggy_store.controller;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.anuar.piggy_store.domain.Product;
 import com.anuar.piggy_store.service.ProductService;
