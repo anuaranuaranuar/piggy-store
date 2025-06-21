@@ -19,7 +19,6 @@ public class CategoryController {
     public CategoryController(CategoryService service){
         this.service=service;
     }
-    
 
     @GetMapping
     public List<Category> getByPage(
@@ -33,5 +32,5 @@ public class CategoryController {
     public Category getByID(@PathVariable Long id){
         return service.getByID(id).orElse(null);
     }
-    ppppppppphola
+
 }
