@@ -2,6 +2,7 @@ package com.anuar.piggy_store.controller;
 
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anuar.piggy_store.domain.Category;
+import com.anuar.piggy_store.dto.response.CategoryDtoRes;
 import com.anuar.piggy_store.service.CategoryService;
 
 @RestController
@@ -21,11 +23,9 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getByPage(
-        @RequestParam(required = true) Long page,
-        @RequestParam(defaultValue = "30") Long size
+    public List<CategoryDtoRes> getByPage(Pageable pageable
     ){
-        return service.getByPage(page, size);
+        return service.getByPage(pageable);
     }
 
     @GetMapping("id/{id}")

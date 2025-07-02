@@ -24,8 +24,7 @@ public class Category {
     private List<Product> products;
 
     
-    public Category(long id, String name, String type) {
-        this.id = id;
+    public Category(String name, String type) {
         this.name = name;
         this.type = type;
     }
@@ -62,6 +61,11 @@ public class Category {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    @Override
+    public String toString() {
+        return "Category [id=" + id + ", name=" + name + ", type=" + type +"]";
     }
 
    

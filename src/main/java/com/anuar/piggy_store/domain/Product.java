@@ -1,5 +1,6 @@
 package com.anuar.piggy_store.domain;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,9 +10,11 @@ public class Product{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+	@Column(nullable = false)
     private String name;
 
-    private Double price;
+	@Column(nullable = false)
+    private Float price;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -25,8 +28,7 @@ public class Product{
 
 	public Product(){}
     
-	public Product(long id, String name, double price, String description, long quantity) {
-		this.id = id;
+	public Product(String name, Float price, String description, Long quantity) {
 		this.name = name;
 		this.price = price;
 		this.description = description;
@@ -49,11 +51,11 @@ public class Product{
 		this.name = name;
 	}
 
-	public Double getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 
@@ -80,6 +82,14 @@ public class Product{
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+
+    @Override
+    public String toString() {
+        return "Product [id=" + id + ", name=" + name + ", price=" + price + ", description=" + description
+                + ", quantity=" + quantity + "]";
+    }
+
+	
 	
     
 }

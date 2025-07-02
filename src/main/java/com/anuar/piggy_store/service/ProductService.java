@@ -6,8 +6,12 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.anuar.piggy_store.domain.Product;
+import com.anuar.piggy_store.dto.response.ProductDtoRes;
 import com.anuar.piggy_store.repository.ProductRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ProductService {
     private final ProductRepository repository;
@@ -16,13 +20,13 @@ public class ProductService {
         this.repository=repository;
     }
 
-    public void save1(Product p){
-        repository.save1(
-            p.getName(),
-            p.getDescription(),
-            p.getPrice(),
-            p.getQuantity(),
-            p.getCategory().getId());
+    public Boolean save(Product p){
+        if(p.getName() == null || p.getPrice() == null){
+             log.warn("Intento de guardar producto inválido: {}", p);
+            return false;
+        }
+        repository.save(p);
+        return true;
     }
     
     //trae  lista de productos  por pagina 
@@ -40,5 +44,16 @@ public class ProductService {
         return repository.findById(id);
     }
     
+    public List<Product> getAll(){
+        return repository.findAll();
+    }
+
+    public List<Product> saveAll(List<Product> products) {
+        return repository.saveAll(products);
+    }
+
+    public List<ProductDtoRes> getBynameWithCategory(String name) {
+        return repository.findByNameWithCategory(name);
+    }
     
 }
