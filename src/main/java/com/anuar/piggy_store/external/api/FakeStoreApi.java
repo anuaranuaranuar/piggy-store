@@ -25,7 +25,6 @@ public class FakeStoreApi {
                 .bodyToFlux(FakeStoreProductDto.class)
                 .collectList()
                 .block();
-
     }
 
     public List<String> getCategory() {

@@ -13,10 +13,12 @@ public class MapperProduct {
 
         
         return new Product(
+            null,
             p.title(),
             p.price(),
             p.description(),
-           0L //default value
+            0L, //default value,
+            null
             );
 
     }

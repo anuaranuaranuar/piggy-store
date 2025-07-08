@@ -8,11 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.anuar.piggy_store.domain.Category;
 import com.anuar.piggy_store.dto.response.CategoryDtoRes;
+import com.anuar.piggy_store.dto.response.ProductDtoRes;
 import com.anuar.piggy_store.repository.CategoryRepository;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class CategoryService {
     private CategoryRepository repository;
@@ -33,7 +32,6 @@ public class CategoryService {
     public Boolean save(Category category){
         if (category.getName()==null) {
 
-            log.warn("categoria sin nombre: {}", category);
             return false;
         }
         repository.save(category);
@@ -50,6 +48,10 @@ public class CategoryService {
 
     public Optional<Category> getByName(String name){
         return repository.findByName(name);
+    }
+
+    public List<ProductDtoRes> getByCategoryWithProducts(String category){
+        return repository.findByCategoryWithProducts(category);
     }
 
 }
