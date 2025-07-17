@@ -15,7 +15,7 @@ import com.anuar.piggy_store.domain.Category;
 import com.anuar.piggy_store.domain.Product;
 import com.anuar.piggy_store.dto.request.FakeStoreProductDto;
 import com.anuar.piggy_store.external.api.FakeStoreApi;
-import com.anuar.piggy_store.mapper.MapperProduct;
+import com.anuar.piggy_store.mapper.ProductMapper;
 import com.anuar.piggy_store.service.CategoryService;
 import com.anuar.piggy_store.service.ProductService;
 

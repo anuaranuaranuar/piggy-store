@@ -3,7 +3,8 @@ package com.anuar.piggy_store.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.anuar.piggy_store.domain.Category;
@@ -20,7 +21,7 @@ public class CategoryService {
         this.repository=repository;
     }
 
-    public List<CategoryDtoRes> getByPage(Pageable pageable){
+    public Page<CategoryDtoRes> getByPage(Pageable pageable){
         
         return repository.findByPage(pageable);
     }
@@ -50,8 +51,8 @@ public class CategoryService {
         return repository.findByName(name);
     }
 
-    public List<ProductDtoRes> getByCategoryWithProducts(String category){
-        return repository.findByCategoryWithProducts(category);
+    public Page<ProductDtoRes> getByCategoryWithProducts(String category, Pageable pageable){
+        return repository.findByCategoryWithProducts(category, pageable);
     }
 
 }

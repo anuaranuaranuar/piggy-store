@@ -1,8 +1,7 @@
 package com.anuar.piggy_store.dto.request;
 
-
-
-public record ProductPostDto(
+public record ProductPutDto(
+        Long id,
         String name,
         Float price,
         String description,

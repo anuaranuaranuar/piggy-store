@@ -2,7 +2,8 @@ package com.anuar.piggy_store.controller;
 
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryDtoRes> getByPage(Pageable pageable
+    public Page<CategoryDtoRes> getByPage(Pageable pageable
     ){
         return service.getByPage(pageable);
     }
@@ -37,11 +38,12 @@ public class CategoryController {
     }
 
     @GetMapping("/{category}")
-    public ApiResponse<List<ProductDtoRes>> getCategoryWithProducts(
-        @PathVariable String category){
-    List<ProductDtoRes> products = service.getByCategoryWithProducts(category);
+    public ApiResponse<Page<ProductDtoRes>> getCategoryWithProducts(
+        @PathVariable String category,
+        Pageable pageable){
+    Page<ProductDtoRes> products = service.getByCategoryWithProducts(category, pageable);
 
-    return new ApiResponse<List<ProductDtoRes>>(
+    return new ApiResponse<Page<ProductDtoRes>>(
         true,
         "Category:" + category,
         "SUCCESS",
