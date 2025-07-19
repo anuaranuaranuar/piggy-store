@@ -16,13 +16,5 @@ import com.anuar.piggy_store.dto.response.ProductDtoRes;
 
 public interface CategoryRepository extends JpaRepository<Category,Long>, JpaSpecificationExecutor<Category>  {
 
-    @Query(value=
-    "SELECT new com.anuar.piggy_store.dto.response.CategoryDtoRes"+
-    "(c.id, c.name, c.type) " +
-    "FROM Category c")
-    Page<CategoryDtoRes> findByPage(Pageable pageable);
-
-    Optional<Category> findByName(String name);
-
    
 } 
