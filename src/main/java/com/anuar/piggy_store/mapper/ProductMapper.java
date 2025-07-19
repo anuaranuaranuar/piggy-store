@@ -43,10 +43,10 @@ public class ProductMapper {
 
     public ProductDtoRes toControllerDto(Product p){
 
-        CategoryDtoRes categoryDto = categoryMapper.toCategoryDtoRes(p.getCategory());
+        CategoryDtoRes CategoryDtoRes = categoryMapper.toCategoryDtoRes(p.getCategory());
         
         return new ProductDtoRes(
-            categoryDto,
+            CategoryDtoRes,
             p.getId(),
             p.getName(),
             p.getPrice(),

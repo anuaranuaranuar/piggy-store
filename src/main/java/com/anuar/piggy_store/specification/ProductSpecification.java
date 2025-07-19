@@ -16,9 +16,12 @@ public class ProductSpecification {
     public static Specification<Product> hasName(String name) {
        
         return (root, query, cb) -> {
+
+            Expression<String> lowerName = cb.lower(root.get("name"));
+
             return cb.like(
-                    cb.lower(root.get("name")),
-                    "%".concat(name.toLowerCase()).concat("%"));
+                    lowerName,
+                    String.format("%%%s%%", name.toLowerCase()));
 
         };
     }
@@ -39,12 +42,11 @@ public class ProductSpecification {
     public static Specification<Product> hasCategory(String category) {
 
         return (root, query, cb) -> {
-            var categoryLower = category.toLowerCase();
             Expression<String> productjoinCategory = root.join("category").get("name");
 
             return cb.like(
                     cb.lower(productjoinCategory),
-                    categoryLower);
+                    String.format("%%%s%%", category.toLowerCase()));
         };
     }
 }

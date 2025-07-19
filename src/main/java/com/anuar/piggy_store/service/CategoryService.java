@@ -1,5 +1,6 @@
 package com.anuar.piggy_store.service;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.anuar.piggy_store.domain.Category;
+import com.anuar.piggy_store.dto.request.CategoryDto;
 import com.anuar.piggy_store.dto.response.CategoryDtoRes;
 import com.anuar.piggy_store.dto.response.ProductDtoRes;
 import com.anuar.piggy_store.mapper.CategoryMapper;
@@ -30,11 +32,14 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CategoryDtoRes> getByPage(String category, Pageable pageable) {
+    public Page<CategoryDtoRes> getByPage(CategoryDto dto, Pageable pageable) {
         Specification<Category> spec = (root, query, cb) -> cb.conjunction();
 
-        if (StringUtils.hasText(category)) {
-            spec = spec.and(CategorySpecification.hasCategory(category));
+        if (StringUtils.hasText(dto.name())) {
+            spec = spec.and(CategorySpecification.hasCategory(dto.name()));
+        }
+        if (StringUtils.hasText(dto.type())) {
+            spec = spec.and(CategorySpecification.hasType(dto.type()));
         }
 
         return repository.findAll(spec, pageable)
@@ -45,21 +50,19 @@ public class CategoryService {
     public CategoryDtoRes getByID(Long id) {
         Category category = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Category Not Fount"));
-        
-            return categoryMapper.toCategoryDtoRes(category);
+
+        return categoryMapper.toCategoryDtoRes(category);
     }
 
-    public Boolean save(Category category) {
-        if (category.getName() == null) {
+    
+    public CategoryDtoRes save(CategoryDto dto) {
+        Category category = categoryMapper.fromCategoryDto(dto);
 
-            return false;
-        }
-        repository.save(category);
-        return true;
-    }
+        category = repository.save(category);
 
-    public List<Category> saveAll(List<Category> categories) {
-        return repository.saveAll(categories);
-    }
+        return categoryMapper.toCategoryDtoRes(category);
 
+    
+
+}
 }
