@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,37 +19,33 @@ import com.anuar.piggy_store.dto.response.ProductDtoRes;
 import com.anuar.piggy_store.service.CategoryService;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/categories")
 public class CategoryController {
     private final CategoryService service;
 
-    public CategoryController(CategoryService service){
-        this.service=service;
+    public CategoryController(CategoryService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public Page<CategoryDtoRes> getByPage(Pageable pageable
-    ){
-        return service.getByPage(pageable);
+    public ResponseEntity<ApiResponse<Page<CategoryDtoRes>>> getByPage(@RequestParam(required = false) String category, Pageable pageable) {
+        Page<CategoryDtoRes> categories = service.getByPage(category, pageable);
+
+        var response = new ApiResponse<>(
+                true,
+                "exito",
+                "SUCCESS",
+                categories,
+                null);
+
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/id/{id}")
-    public Category getByID(@PathVariable Long id){
-        return service.getByID(id).orElse(null);
+    @GetMapping("/{id}")
+    public CategoryDtoRes getByID(@PathVariable Long id) {
+        return service.getByID(id);
     }
 
-    @GetMapping("/{category}")
-    public ApiResponse<Page<ProductDtoRes>> getCategoryWithProducts(
-        @PathVariable String category,
-        Pageable pageable){
-    Page<ProductDtoRes> products = service.getByCategoryWithProducts(category, pageable);
-
-    return new ApiResponse<Page<ProductDtoRes>>(
-        true,
-        "Category:" + category,
-        "SUCCESS",
-        products,
-        List.of());
-        }
+    
 
 }

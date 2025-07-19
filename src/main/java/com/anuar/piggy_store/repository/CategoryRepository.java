@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -13,7 +14,7 @@ import com.anuar.piggy_store.domain.Category;
 import com.anuar.piggy_store.dto.response.CategoryDtoRes;
 import com.anuar.piggy_store.dto.response.ProductDtoRes;
 
-public interface CategoryRepository extends JpaRepository<Category,Long>  {
+public interface CategoryRepository extends JpaRepository<Category,Long>, JpaSpecificationExecutor<Category>  {
 
     @Query(value=
     "SELECT new com.anuar.piggy_store.dto.response.CategoryDtoRes"+
@@ -23,11 +24,5 @@ public interface CategoryRepository extends JpaRepository<Category,Long>  {
 
     Optional<Category> findByName(String name);
 
-    @Query("SELECT new com.anuar.piggy_store.dto.response.ProductDtoRes"+
-    "(c.id, c.name, c.type, p.id, p.name, p.price, p.description, p.quantity) " +
-    "FROM Category c JOIN c.products p " +
-    "WHERE LOWER(c.name) = LOWER(:category)")
-    Page<ProductDtoRes> findByCategoryWithProducts(
-        @Param("category") String category,
-        Pageable pageable);
+   
 } 

@@ -1,11 +1,9 @@
 package com.anuar.piggy_store.dto.response;
 
-import com.anuar.piggy_store.domain.Category;
+import com.anuar.piggy_store.dto.response.CategoryDtoRes;
 
 public record ProductDtoRes(
-    Long categoryId,
-    String categoryName,
-    String categoryType,
+    CategoryDtoRes category,
     Long id,
     String name,
     float price,

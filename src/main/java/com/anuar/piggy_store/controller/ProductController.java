@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.*;
 
 import com.anuar.piggy_store.domain.Category;
 import com.anuar.piggy_store.domain.Product;
-import com.anuar.piggy_store.dto.request.ProductPostDto;
-
+import com.anuar.piggy_store.dto.filter.ProductFilter;
+import com.anuar.piggy_store.dto.request.ProductDto;
 import com.anuar.piggy_store.dto.response.ApiResponse;
 import com.anuar.piggy_store.dto.response.ProductDtoRes;
+import com.anuar.piggy_store.mapper.ProductMapper;
 import com.anuar.piggy_store.service.CategoryService;
 import com.anuar.piggy_store.service.ProductService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/products")
@@ -28,29 +31,22 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> post(@RequestBody ProductPostDto productDto) {
+    public ResponseEntity<ProductDtoRes> post(@RequestBody @Valid ProductDto productDto) {
 
-        Product product = productService.save(productDto);
+        ProductDtoRes product = productService.save(productDto);
 
-        URI location = URI.create("/products/" + product.getId());
+        URI location = URI.create("/products/" + product.id());
 
         return ResponseEntity.created(location).body(product);
+
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ProductDtoRes>>> getByPage(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) Float minPrice,
-            @RequestParam(required = false) Float maxPrice,
-            @RequestParam(required = false) String category,
+            @ModelAttribute ProductFilter filter,
             Pageable pageable) {
 
-        Page<ProductDtoRes> products = productService.getByPage(
-                name,
-                minPrice,
-                maxPrice,
-                category,
-                pageable);
+        Page<ProductDtoRes> products = productService.getByPage(filter, pageable);
 
         ApiResponse<Page<ProductDtoRes>> response = new ApiResponse<>(
                 true,
@@ -63,14 +59,15 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getById(@PathVariable Long id) {
-        return productService.getByID(id).orElse(null);
+    public ProductDtoRes getById(@PathVariable Long id) {
+        return productService.getByID(id);
+
     }
 
     @PutMapping("/{id}")
-    public void modify(@RequestParam Long id, @RequestBody ProductPostDto dto) {
+    public ResponseEntity<ProductDtoRes> update(@PathVariable Long id, @RequestBody @Valid ProductDto dto) {
 
-        
+        return ResponseEntity.ok(productService.update(id, dto));
     }
 
 }

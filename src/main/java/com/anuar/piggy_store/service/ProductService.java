@@ -16,8 +16,8 @@ import org.springframework.util.StringUtils;
 
 import com.anuar.piggy_store.domain.Category;
 import com.anuar.piggy_store.domain.Product;
-import com.anuar.piggy_store.dto.request.ProductPostDto;
-import com.anuar.piggy_store.dto.request.ProductPutDto;
+import com.anuar.piggy_store.dto.filter.ProductFilter;
+import com.anuar.piggy_store.dto.request.ProductDto;
 import com.anuar.piggy_store.dto.response.ApiResponse;
 import com.anuar.piggy_store.dto.response.ProductDtoRes;
 import com.anuar.piggy_store.mapper.ProductMapper;
@@ -40,29 +40,24 @@ public class ProductService {
 
     // trae lista de productos por pagina
     @Transactional(readOnly = true)
-    public Page<ProductDtoRes> getByPage(
-            String name,
-            Float minPrice,
-            Float maxPrice,
-            String category,
-            Pageable pageable) {
+    public Page<ProductDtoRes> getByPage(ProductFilter filter, Pageable pageable) {
 
         Specification<Product> spec = (root, query, cb) -> cb.conjunction();
 
-        if (StringUtils.hasText(name)) {
-            spec = spec.and(ProductSpecification.hasName(name));
+        if (StringUtils.hasText(filter.name())) {
+            spec = spec.and(ProductSpecification.hasName(filter.name()));
         }
 
-        if (minPrice != null && minPrice != 0) {
-            spec = spec.and(ProductSpecification.priceGreaterThan(minPrice));
+        if (filter.minPrice() != null && filter.minPrice() != 0) {
+            spec = spec.and(ProductSpecification.priceGreaterThan(filter.minPrice()));
         }
 
-        if (maxPrice != null && maxPrice != 0) {
-            spec = spec.and(ProductSpecification.priceLessThan(maxPrice));
+        if (filter.maxPrice() != null && filter.maxPrice() != 0) {
+            spec = spec.and(ProductSpecification.priceLessThan(filter.maxPrice()));
         }
 
-        if (StringUtils.hasText(category)) {
-            spec = spec.and(ProductSpecification.hasCategory(category));
+        if (StringUtils.hasText(filter.category())) {
+            spec = spec.and(ProductSpecification.hasCategory(filter.category()));
         }
 
         Page<ProductDtoRes> result = productRepository.findAll(spec, pageable)
@@ -70,26 +65,32 @@ public class ProductService {
 
         if (result.isEmpty()) {
             // todo crear excepcion
-            throw new IllegalArgumentException("datos no encontrados");
+            throw new IllegalArgumentException("data not found");
 
         }
 
         return result;
     }
 
-    public Product save(ProductPostDto dto) {
+    public ProductDtoRes save(ProductDto dto) {
         Category category = categoryRepository.findById(dto.categoryId())
                 .orElseThrow(() -> // todo crear excepcion
                 new IllegalArgumentException("Category not found"));
 
-        Product product = productMapper.fromProductPostDto(dto, category);
+        Product product = productMapper.fromProductDto(dto, category);
+        
+        product = productRepository.save(product);
 
-        return product = productRepository.save(product);
+        return productMapper.toControllerDto(product);
     }
 
-    public Optional<Product> getByID(long id) {
+    @Transactional(readOnly = true)
+    public ProductDtoRes getByID(long id) {
 
-        return productRepository.findById(id);
+        var product =productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+        return productMapper.toControllerDto(product);
     }
 
     public List<Product> getAll() {
@@ -101,12 +102,19 @@ public class ProductService {
     }
 
     @Transactional
-    public void modify(Long id,  ProductPutDto dto) {
-       Optional<Product> product = productRepository.findById((dto.id()));
-        
-        
-       }
+    public ProductDtoRes update(Long id, ProductDto dto) {
+        Product product = productRepository.findById((id))
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
+        Category category = categoryRepository.findById(dto.categoryId())
+                .orElseThrow(() -> // todo crear excepcion
+                new IllegalArgumentException("Category not found"));
+
+        productMapper.updateProductFromDto(product,dto,category);
+
+        productRepository.save(product);
+
+        return productMapper.toControllerDto(product);
     }
 
-
+}

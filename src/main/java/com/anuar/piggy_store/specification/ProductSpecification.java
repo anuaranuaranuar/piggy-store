@@ -14,11 +14,11 @@ import jakarta.persistence.criteria.Join;
 public class ProductSpecification {
 
     public static Specification<Product> hasName(String name) {
-        
+       
         return (root, query, cb) -> {
             return cb.like(
                     cb.lower(root.get("name")),
-                    "%".concat(name).concat("%"));
+                    "%".concat(name.toLowerCase()).concat("%"));
 
         };
     }
