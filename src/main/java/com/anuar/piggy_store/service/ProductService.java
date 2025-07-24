@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.rsocket.RSocketProperties.Server.S
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -64,9 +64,8 @@ public class ProductService {
                 .map(productMapper::toControllerDto);
 
         if (result.isEmpty()) {
-            // todo crear excepcion
+            // TODO crear excepcion
             throw new IllegalArgumentException("data not found");
-
         }
 
         return result;
@@ -74,11 +73,11 @@ public class ProductService {
 
     public ProductDtoRes save(ProductDto dto) {
         Category category = categoryRepository.findById(dto.categoryId())
-                .orElseThrow(() -> // todo crear excepcion
+                .orElseThrow(() -> // TODO crear excepcion
                 new IllegalArgumentException("Category not found"));
 
         Product product = productMapper.fromProductDto(dto, category);
-        
+
         product = productRepository.save(product);
 
         return productMapper.toControllerDto(product);
@@ -87,7 +86,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductDtoRes getByID(long id) {
 
-        var product =productRepository.findById(id)
+        var product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
         return productMapper.toControllerDto(product);
@@ -107,10 +106,25 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
         Category category = categoryRepository.findById(dto.categoryId())
-                .orElseThrow(() -> // todo crear excepcion
+                .orElseThrow(() -> // TODO crear excepcion
                 new IllegalArgumentException("Category not found"));
 
-        productMapper.updateProductFromDto(product,dto,category);
+        productMapper.updateProductFromDto(product, dto, category);
+
+        productRepository.save(product);
+
+        return productMapper.toControllerDto(product);
+    }
+
+    @Transactional
+    public ProductDtoRes remove(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Product Not Fount"));
+
+        if (!product.getIsActive()) {
+            throw new IllegalArgumentException("Product is disable");
+        }
+        product.setIsActive(false);
 
         productRepository.save(product);
 

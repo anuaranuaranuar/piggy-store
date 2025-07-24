@@ -13,7 +13,8 @@ public class CategoryMapper {
         return new CategoryDtoRes(
                 category.getId(),
                 category.getName(),
-                category.getType());
+                category.getType(),
+                category.getIsActive());
     }
 
 
@@ -23,8 +24,19 @@ public class CategoryMapper {
                 null,
                 dto.name(),
                 dto.type(),
+                true,
                 null);
     }
+
+    public Category fromCategoryDtoRes(CategoryDtoRes dto) {
+        return new Category(
+                dto.id(),
+                dto.name(),
+                dto.type(),
+                true,
+                null);
+    }
+
 
     public Category update(Category category, CategoryDto dto) {
         category.setName(dto.name());

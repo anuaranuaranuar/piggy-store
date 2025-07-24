@@ -3,6 +3,7 @@ package com.anuar.piggy_store.domain;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
+@EqualsAndHashCode(of = "id")
 @Entity
 public class Product {
 
@@ -26,6 +28,9 @@ public class Product {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(nullable = false)
+    private Boolean isActive;
 
     private Long quantity;
 

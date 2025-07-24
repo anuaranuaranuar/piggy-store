@@ -70,4 +70,9 @@ public class ProductController {
         return ResponseEntity.ok(productService.update(id, dto));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProductDtoRes> remove(@PathVariable Long id){
+        return ResponseEntity.ok(productService.remove(id));
+    }
+
 }

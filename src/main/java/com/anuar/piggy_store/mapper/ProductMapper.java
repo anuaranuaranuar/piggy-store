@@ -25,6 +25,7 @@ public class ProductMapper {
             p.title(),
             p.price(),
             p.description(),
+            true,
             0L, //default value,
             null
             );
@@ -51,7 +52,8 @@ public class ProductMapper {
             p.getName(),
             p.getPrice(),
             p.getDescription(),
-            p.getQuantity());
+            p.getQuantity(),
+            p.getIsActive());
     }
 
     public Product fromProductDto(ProductDto dto, Category category){
@@ -60,6 +62,7 @@ public class ProductMapper {
                     dto.name(),
                     dto.price(),
                     dto.description(),
+                    true,
                     dto.quantity(),
                     category);
 

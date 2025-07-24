@@ -8,5 +8,6 @@ public record ProductDtoRes(
     String name,
     float price,
     String description,
-    Long quantity
+    Long quantity,
+    Boolean isActive
 ) {}

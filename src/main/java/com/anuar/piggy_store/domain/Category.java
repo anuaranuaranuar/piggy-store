@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
+@EqualsAndHashCode(of = "id")
 @Entity
 public class Category {
     @Id
@@ -22,6 +24,9 @@ public class Category {
     private String name;
 
     private String type;
+
+    @Column(nullable = false)
+    private Boolean isActive;
 
     @OneToMany(
         cascade = CascadeType.ALL,
