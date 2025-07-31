@@ -39,7 +39,11 @@ dependencies {
 	//lombok
 	implementation 'org.projectlombok:lombok:1.18.38'
 	annotationProcessor 'org.projectlombok:lombok:1.18.38'
+	
+	//token jwt
+	implementation 'com.auth0:java-jwt:4.5.0'
 	}
+
 
 tasks.named('test') {
 	useJUnitPlatform()

@@ -49,4 +49,5 @@ public class ProductSpecification {
                     String.format("%%%s%%", category.toLowerCase()));
         };
     }
+
 }

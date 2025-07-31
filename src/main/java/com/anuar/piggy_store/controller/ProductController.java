@@ -45,7 +45,7 @@ public class ProductController {
     public ResponseEntity<ApiResponse<Page<ProductDtoRes>>> getByPage(
             @ModelAttribute ProductFilter filter,
             Pageable pageable) {
-
+        
         Page<ProductDtoRes> products = productService.getByPage(filter, pageable);
 
         ApiResponse<Page<ProductDtoRes>> response = new ApiResponse<>(

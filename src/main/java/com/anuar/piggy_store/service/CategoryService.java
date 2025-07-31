@@ -40,7 +40,7 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public Page<CategoryDtoRes> getByPage(CategoryDto dto, Pageable pageable) {
-        Specification<Category> spec = (root, query, cb) -> cb.conjunction();
+       Specification<Category> spec = (root, query, cb) -> cb.isTrue(root.get("isActive"));
 
         if (StringUtils.hasText(dto.name())) {
             spec = spec.and(CategorySpecification.hasCategory(dto.name()));

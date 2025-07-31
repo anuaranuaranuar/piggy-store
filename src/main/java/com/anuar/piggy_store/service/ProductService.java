@@ -42,7 +42,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Page<ProductDtoRes> getByPage(ProductFilter filter, Pageable pageable) {
 
-        Specification<Product> spec = (root, query, cb) -> cb.conjunction();
+        Specification<Product> spec = (root, query, cb) -> cb.isTrue(root.get("isActive"));
 
         if (StringUtils.hasText(filter.name())) {
             spec = spec.and(ProductSpecification.hasName(filter.name()));
